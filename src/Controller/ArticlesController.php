@@ -43,12 +43,21 @@ class ArticlesController extends AppController
             }
             $this->Flash->error(__('Unable to add your article.'));
         }
+        // タグのリストを取得
+        $tags = $this->Articles->Tags->find('list');
+
+        // ビューコンテキストに tags をセット
+        $this->set('tags', $tags);
+
         $this->set('article', $article);
     }
 
     public function edit($slug)
     {
-        $article = $this->Articles->findBySlug($slug)->firstOrFail();
+        $article = $this->Articles
+            ->findBySlug($slug)
+            ->contain('Tags') // 関連づけられた Tags を読み込む
+            ->firstOrFail();
         if ($this->request->is(['post', 'put'])) {
             $this->Articles->patchEntity($article, $this->request->getData());
             if ($this->Articles->save($article)) {
@@ -57,6 +66,12 @@ class ArticlesController extends AppController
             }
             $this->Flash->error(__('Unable to update your article.'));
         }
+
+        // タグのリストを取得
+        $tags = $this->Articles->Tags->find('list');
+
+        // ビューコンテキストに tags をセット
+        $this->set('tags', $tags);
 
         $this->set('article', $article);
     }
@@ -69,5 +84,19 @@ class ArticlesController extends AppController
             $this->Flash->success(__('The {0} article has been deleted.', $article->title));
             return $this->redirect(['action' => 'index']);
         }
+    }
+
+    public function tags()
+    {
+        // ArticlesTable を使用してタグ付きの記事を検索します。
+        $articles = $this->Articles->find('tagged', [
+            'tags' => $tags
+        ]);
+
+        // 変数をビューテンプレートのコンテキストに渡します。
+        $this->set([
+            'articles' => $articles,
+            'tags' => $tags
+        ]);
     }
 }
