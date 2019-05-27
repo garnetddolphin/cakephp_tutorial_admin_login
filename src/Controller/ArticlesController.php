@@ -109,7 +109,10 @@ class ArticlesController extends AppController
 
         // 記事が現在のユーザーに属していることを確認します。
         $article = $this->Articles->findBySlug($slug)->first();
+        if($article->user_id === $user['id']){
+            return true;
+        }
 
-        return $article->user_id === $user['id'];
+        return parent::isAuthorized($user);
     }
 }
