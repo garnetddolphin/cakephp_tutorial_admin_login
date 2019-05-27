@@ -78,6 +78,11 @@ class AppController extends Controller
     }
     public function isAuthorized($user)
     {
+        // 管理者はすべての操作にアクセスできます。
+        if(isset($user['role']) && $user['role'] === 'admin'){
+            return true;
+        }
+
         // デフォルトでは、アクセスを拒否します。
         return false;
     }
