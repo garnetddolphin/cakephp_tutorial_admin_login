@@ -30,3 +30,9 @@ Router::scope('/', function ($routes) {
     // 規約に基づいたデフォルトルートを接続。
     $routes->fallbacks();
 });
+
+Router::prefix('admin',function($routes){
+    //この全てのルートは'/admin'によってプレフィックスされます。
+    // そのために、prefix => adminをルート要素として追加します。
+    $routes->fallbacks(DashedRoute::class);
+});
