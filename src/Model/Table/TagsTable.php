@@ -43,7 +43,9 @@ class TagsTable extends Table
         $this->belongsToMany('Articles', [
             'foreignKey' => 'tag_id',
             'targetForeignKey' => 'article_id',
-            'joinTable' => 'articles_tags'
+            'joinTable' => 'articles_tags',
+            'dependent' => true,
+            'cascadeCallbacks' => true
         ]);
     }
 

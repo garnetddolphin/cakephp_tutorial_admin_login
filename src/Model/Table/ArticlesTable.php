@@ -14,7 +14,10 @@ class ArticlesTable extends Table
     public function initialize(array $config)
     {
         $this->addBehavior('Timestamp');
-        $this->belongsToMany('Tags'); // この行を追加
+        $this->belongsToMany('Tags',[
+            'dependent' => true,
+            'cascadeCallbacks' => true
+        ]); // この行を追加
     }
 
 	public function validationDefault(Validator $validator)
