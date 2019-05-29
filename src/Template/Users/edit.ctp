@@ -25,8 +25,9 @@
         <?php
             echo $this->Form->control('email');
             echo $this->Form->control('password');
+            echo $this->Form->control('mode', ['type' => 'hidden','value' => 'edit_confirm']);
         ?>
     </fieldset>
-    <?= $this->Form->button(__('Submit')) ?>
+    <?= $this->Form->button(__('Next')) ?>
     <?= $this->Form->end() ?>
 </div>
